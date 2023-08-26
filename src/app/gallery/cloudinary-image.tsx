@@ -5,7 +5,7 @@ import {MarkAsFavouriteAction} from './actions';
 import {useTransition} from 'react'
 
 
-function CloudinaryImage(props: any & {publicId : string}) {
+function CloudinaryImage(props: any & {publicid : string}) {
     const [transition , startTransition] = useTransition()
     return (
         <div className='relative' >
@@ -13,7 +13,7 @@ function CloudinaryImage(props: any & {publicId : string}) {
             <Heart className="absolute top-2 right-2 hover:text-red-500 cursor-pointer" 
             onClick={()=>{
                 startTransition(()=>{
-                    MarkAsFavouriteAction(props.publicId)
+                    MarkAsFavouriteAction(props.publicid)
                 })
             }}
             />
