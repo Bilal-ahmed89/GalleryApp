@@ -3,9 +3,11 @@ import UploadButton from './upload-button';
 import cloudinary from 'cloudinary'
 import { CldImage } from 'next-cloudinary';
 import CloudinaryImage from './cloudinary-image';
+import ImageGrid from './../../components/ImageGrid';
+import GalleryGrid from './GalleryGrid';
 
 export type SearchResult = {
-    public_id: string
+    public_id: string,
     tags: string[]
 };
 
@@ -20,6 +22,8 @@ async function GalleryPage() {
         .execute() as { resources: SearchResult[] }
 
 
+
+
     return (
         <section>
 
@@ -28,20 +32,8 @@ async function GalleryPage() {
                     <h1 className='text-4xl font-bold'>Gallery</h1>
                     <UploadButton />
                 </div>
-                <div className='grid grid-cols-4 gap-4'>
-                    {
-                        results.resources.map((result) => (
-                            <CloudinaryImage
-                                path='/gallery'
-                                key={result.public_id}
-                                imagedata={result}
-                                alt="an image of someting"
-                                width="400"
-                                height="300"
-                            />
-                        ))
-                    }
-                </div>
+                <GalleryGrid images={results.resources} />
+                
             </div>
         </section>
     )

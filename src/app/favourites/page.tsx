@@ -1,10 +1,8 @@
 
 import { ForceRefresh } from '@/components/ForceRefresh';
 import cloudinary from 'cloudinary'
-import { CldImage } from 'next-cloudinary';
-import CloudinaryImage from '../gallery/cloudinary-image';
 import { SearchResult } from '../gallery/page';
-
+import FavouritesList from './favouritesList';
 
 async function FavouritesPage() {
 
@@ -23,23 +21,13 @@ async function FavouritesPage() {
                 <div className='flex justify-between'>
                     <h1 className='text-4xl font-bold'>Favourite Images</h1>
                 </div>
-                <div className='grid grid-cols-4 gap-4'>
-                    {
-                        results.resources.map((result) => (
-                            <CloudinaryImage
-                                path='/favourites'
-                                key={result.public_id}
-                                imagedata={result}
-                                alt="an image of someting"
-                                width="400"
-                                height="300"
-                            />
-                        ))
-                    }
-                </div>
+
+                <FavouritesList initialResources={results.resources} />
+
             </div>
         </section>
     )
 }
 
 export default FavouritesPage;
+
