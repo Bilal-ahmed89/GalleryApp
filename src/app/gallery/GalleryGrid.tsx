@@ -6,13 +6,13 @@ import { SearchResult } from '@/app/gallery/page';
 
 
 
-function GalleryGrid({ images }: { images: SearchResult }) {
+function GalleryGrid({ images }: { images: SearchResult[] }) {
 
 
     return (
         <ImageGrid
             images={images}
-            getImage={(imagedata: SearchResult[]) => {
+            getImage={(imagedata: SearchResult) => {
                 return (
                     <CloudinaryImage
                         key={imagedata.public_id}

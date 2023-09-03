@@ -26,7 +26,7 @@ export function ImageMenu({ image }: { image: SearchResult }) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild onClick={() => setOpen(false)}>
           <Button asChild variant="ghost" className="cursor-pointer flex justify-start">
-            <Link href={`/edit?publicid=${encodeURIComponent(image.public_id)}`} className="pl-4" image={image} onClose={() => setOpen(false)} >
+            <Link href={`/edit?publicid=${encodeURIComponent(image.public_id)}`} className="pl-4">
               <Pencil className="mr-2 w-4 h-4 "/>
               Edit
             </Link>

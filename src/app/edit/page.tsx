@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { CldImage } from 'next-cloudinary';
 import { useState } from 'react';
+import { Input } from '@/components/ui/input';
 
 
 export default function ({ searchParams: { publicid } }: { searchParams: { publicid: string } }) {
@@ -9,6 +10,9 @@ export default function ({ searchParams: { publicid } }: { searchParams: { publi
     const [transformation, setTransformation] = useState<
         undefined | "generative-fill" | "blur" | "removeBackground" | "pixelate" | "crop"
     >();
+
+    const [prompt, setPrompt] = useState("")
+
 
     return (
         <section>
@@ -18,11 +22,19 @@ export default function ({ searchParams: { publicid } }: { searchParams: { publi
                 </div>
                 <div className="flex gap-4">
                     <Button variant="ghost" onClick={() => setTransformation(undefined)}>Clear All</Button>
-                    <Button onClick={() => setTransformation('generative-fill')}>Apply Generative Fill</Button>
+                    <div className="flex flex-col gap-4">
+                        <Button onClick={() => setTransformation('generative-fill')}>
+                            Apply Generative Fill
+                        </Button>
+                        <Input value={prompt} onChange={e => setPrompt(e.currentTarget.value)} />
+                    </div>
+                    
                     <Button onClick={() => setTransformation('blur')}>Apply Blur</Button>
                     <Button onClick={() => setTransformation('removeBackground')}>Apply Background Removal</Button>
                     <Button onClick={() => setTransformation('pixelate')}>Apply pixelate</Button>
                     <Button onClick={() => setTransformation('crop')}>Apply crop</Button>
+
+
                 </div>
 
                 <div className="grid grid-cols-2 gap-12">
