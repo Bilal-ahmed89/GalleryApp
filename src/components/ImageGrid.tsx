@@ -6,10 +6,15 @@ import { ReactNode } from "react";
 const MAX_COLUMS = 4;
 
 
-function ImageGrid({ images, getImage }: { images: SearchResult[]; getImage: (imagedata : SearchResult[]) => ReactNode }) {
+function ImageGrid({ images, getImage }: { images: SearchResult[]; getImage: (imagedata : SearchResult) => ReactNode }) {
 
 
-    function getColumns(colIndex: number) {   
+    function getColumns( colIndex: number) {
+        if (!images) {
+            
+            return [];
+        }
+       
         return images.filter((resource, idx) => idx % MAX_COLUMS === colIndex )
     }
 

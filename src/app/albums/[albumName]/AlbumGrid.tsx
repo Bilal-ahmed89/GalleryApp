@@ -7,13 +7,13 @@ import ImageGrid from '@/components/ImageGrid';
 
 
 
-function AlbumGrid({ images }: { images: SearchResult }) {
+function AlbumGrid({ images }: { images: SearchResult[] }) {
 
 
     return (
         <ImageGrid
             images={images}
-            getImage={(imagedata: SearchResult[]) => {
+            getImage={(imagedata: SearchResult) => {
                 return (
                     <CloudinaryImage
                         key={imagedata.public_id}

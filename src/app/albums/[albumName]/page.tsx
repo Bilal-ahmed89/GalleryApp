@@ -9,11 +9,12 @@ async function AlbumPage({ params: { albumName } } : {
     params: { albumName: string }
 }) {
 
-    const results = await cloudinary.v2.search
+    const results = (await cloudinary.v2.search
         .expression(`resource_type:image AND folder=${albumName}`)
         .sort_by('created_at', 'desc')
         .with_field("tags")
         .max_results(20)
+        .execute()) as { resources: SearchResult[] };
      
     return (
         <section>
