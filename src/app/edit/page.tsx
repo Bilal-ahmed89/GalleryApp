@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { CldImage } from 'next-cloudinary';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { saveAs } from 'file-saver';
 
 
 export default function ({ searchParams: { publicid } }: { searchParams: { publicid: string } }) {
@@ -12,6 +14,25 @@ export default function ({ searchParams: { publicid } }: { searchParams: { publi
     >();
 
     const [prompt, setPrompt] = useState("")
+    const [pendingPrompt, setPendingPrompt] = useState("");
+
+    const handleDownload = (publicid: string, fileName: string) => {
+        fetch(publicid)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then((blob) => {
+                saveAs(blob, fileName);
+            })
+            .catch((error) => {
+                console.error('Error downloading image:', error);
+            });
+    };
+
+
 
 
     return (
@@ -23,16 +44,19 @@ export default function ({ searchParams: { publicid } }: { searchParams: { publi
                 <div className="flex gap-4">
                     <Button variant="ghost" onClick={() => setTransformation(undefined)}>Clear All</Button>
                     <div className="flex flex-col gap-4">
-                        <Button onClick={() => setTransformation('generative-fill')}>
-                            Apply Generative Fill
+                        <Button onClick={() => {
+                            setTransformation('generative-fill')
+                            setPrompt(pendingPrompt)
+                        }}>
+                            Generative Fill
                         </Button>
-                        <Input value={prompt} onChange={e => setPrompt(e.currentTarget.value)} />
+                        <Label>Prompt</Label>
+                        <Input value={pendingPrompt} onChange={e => setPendingPrompt(e.currentTarget.value)} />
                     </div>
-                    
-                    <Button onClick={() => setTransformation('blur')}>Apply Blur</Button>
-                    <Button onClick={() => setTransformation('removeBackground')}>Apply Background Removal</Button>
-                    <Button onClick={() => setTransformation('pixelate')}>Apply pixelate</Button>
-                    <Button onClick={() => setTransformation('crop')}>Apply crop</Button>
+                    <Button onClick={() => setTransformation('blur')}>Blur</Button>
+                    <Button onClick={() => setTransformation('removeBackground')}>Remove background</Button>
+                    <Button onClick={() => setTransformation('pixelate')}>Pixelate</Button>
+                    <Button onClick={() => setTransformation('crop')}>Crop</Button>
 
 
                 </div>
@@ -40,67 +64,106 @@ export default function ({ searchParams: { publicid } }: { searchParams: { publi
                 <div className="grid grid-cols-2 gap-12">
                     <CldImage
                         src={publicid}
-                        width="300"
-                        height="200"
+                        width="1800"
+                        height="1400"
                         alt='Some Image'
                     />
 
                     {
-                        transformation === 'generative-fill' &&
-                        <CldImage
-                            src={publicid}
-                            width="300"
-                            height="200"
-                            alt='Some Image'
-                            crop='pad'
-                            fillBackground
-                        />
+                        transformation === 'generative-fill' && (
+                            <div>
+                                <CldImage
+                                    src={publicid}
+                                    width="1800"
+                                    height="1400"
+                                    alt='Some Image'
+                                    draggable
+                                    crop='pad'
+                                    fillBackground={{
+                                        prompt: prompt || "",
+                                    }}
+                                />
+                                <Button className="mt-4" onClick={() => handleDownload(publicid, 'generative-fill-image.jpg')}>
+                                    Download Generative Fill Image
+                                </Button>
+                            </div>
+                        )
                     }
+
                     {
                         transformation === 'blur' &&
-                        <CldImage
-                            src={publicid}
-                            width="300"
-                            height="200"
-                            blur="800"
-                            alt='Some Image'
+                        (
+                            <div>
+                                <CldImage
+                                    src={publicid}
+                                    width="1800"
+                                    height="1400"
+                                    alt='Some Image'
+                                    blur="800"
+                                />
+                                <Button className="mt-4" onClick={() => handleDownload(publicid, 'blur-image.jpg')}>
+                                    Download Blur Image
+                                </Button>
+                            </div>
+                        )
 
-                        />
                     }
                     {
                         transformation === 'removeBackground' &&
-                        <CldImage
-                            src={publicid}
-                            width="300"
-                            height="200"
-                            removeBackground
-                            alt='Some Image'
-
-                        />
+                        (
+                            <div>
+                                <CldImage
+                                    src={publicid}
+                                    width="1800"
+                                    height="1400"
+                                    alt='Some Image'
+                                    removeBackground
+                                />
+                                <Button className="mt-4" onClick={() => handleDownload(publicid, 'remove-background-image.jpg')}>
+                                    Download Background removed Image
+                                </Button>
+                            </div>
+                        )
                     }
                     {
                         transformation === 'pixelate' &&
-                        <CldImage
-                            src={publicid}
-                            width="300"
-                            height="200"
-                            pixelate
-                            alt='Some Image'
-                        />
+                        (
+                            <div>
+                                <CldImage
+                                    src={publicid}
+                                    width="1800"
+                                    height="1400"
+                                    alt='Some Image'
+                                    pixelate
+                                />
+                                <Button className="mt-4" onClick={() => handleDownload(publicid, 'pixelated-image.jpg')}>
+                                    Download Pixelated Image
+                                </Button>
+                            </div>
+                        )
                     }
                     {
                         transformation === 'crop' &&
-                        <CldImage
-                            src={publicid}
-                            width="300"
-                            height="200"
-                            crop="thumb"
-                            gravity="auto"
-                            alt='Some Image'
-                        />
+                        (
+                            <div>
+                                <CldImage
+                                    src={publicid}
+                                    width="1800"
+                                    height="1400"
+                                    alt='Some Image'
+                                    crop="thumb"
+                                    gravity="auto"
+                                />
+                                <Button className="mt-4" onClick={() => handleDownload(publicid, 'cropped-image.jpg')}>
+                                    Download Cropped Image
+                                </Button>
+                            </div>
+                        )
+
                     }
                 </div>
             </div>
         </section>
     )
-}  
+}
+
