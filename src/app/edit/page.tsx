@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { saveAs } from 'file-saver';
 
 
-export default function ({ searchParams: { publicid } }: { searchParams: { publicid: string } }) {
+export default function EditPage({ searchParams: { publicid } }: { searchParams: { publicid: string } }) {
 
     const [transformation, setTransformation] = useState<
         undefined | "generative-fill" | "blur" | "removeBackground" | "pixelate" | "crop"

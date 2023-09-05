@@ -4,11 +4,12 @@ import { useEffect } from 'react';
 
 export function ForceRefresh() {
 
-   const  router = useRouter()
-    useEffect(()=>{
-        router.refresh()
-    },[])
+    const router = useRouter()
 
-        return <></>
+    useEffect(() => {
+        router.refresh()
+    }, [router])
+
+    return <></>
 }
 
