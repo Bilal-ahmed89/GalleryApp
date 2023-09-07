@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
     Dialog,
     DialogContent,
@@ -19,6 +19,11 @@ export function AddToAlbumDialouge({ image, onClose }: { image: SearchResult, on
 
     const [albumName, setAlbumName] = useState('')
     const [open, setOpen] = useState(false)
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+      }, []);
 
       
     return (
@@ -58,6 +63,9 @@ export function AddToAlbumDialouge({ image, onClose }: { image: SearchResult, on
                             onClose()
                             await createFolder(albumName, image)
                             setOpen(false)
+                            if (!isMounted) {
+                                return null;
+                              }
                         }}
                         type="submit">Add to Album</Button>
                 </DialogFooter>
